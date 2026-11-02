@@ -151,9 +151,10 @@ const SITE = {
     eyebrow: "Contact",
     title: "Book a free trial class",
     sub: "Send us a message and we'll reply with the timetable, fees and a time to visit.",
+    // The person people should reach
+    person: { name: "Pooja Gupta", role: "Studio contact" },
     email: "naviyabeats2202@gmail.com",
     phone: "",
-    location: "Studio address — add yours here",
     hours: "Mon–Fri 6–9 PM · Sat 9 AM–1 PM",
     form: {
       // Where the form sends. Leave "" for a demo (shows a thank-you message).

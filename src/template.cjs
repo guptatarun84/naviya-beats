@@ -17,7 +17,7 @@ const ICONS = {
     '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
   facebook: '<path d="M15 3h-2.5A4.5 4.5 0 008 7.5V10H5.5v4H8v7h4v-7h3l.8-4H12V7.5c0-.8.4-1 1-1h2V3z"/>',
   mail: '<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6 8.5-6"/>',
-  pin: '<path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+  user: '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5"/>',
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
 };
 
@@ -104,11 +104,13 @@ const footerSocials = c.social
   .join("\n            ");
 
 const contactMeta = [
+  c.contact.person && c.contact.person.name
+    ? `<li class="contact-person">${icon("user")}<span><b>${esc(c.contact.person.name)}</b>${c.contact.person.role ? `<small>${esc(c.contact.person.role)}</small>` : ""}</span></li>`
+    : "",
   c.contact.email
     ? `<li>${icon("mail")}<a href="mailto:${esc(c.contact.email)}">${esc(c.contact.email)}</a></li>`
     : "",
   c.contact.phone ? `<li>${icon("mail")}<a href="tel:${esc(c.contact.phone)}">${esc(c.contact.phone)}</a></li>` : "",
-  c.contact.location ? `<li>${icon("pin")}<span>${esc(c.contact.location)}</span></li>` : "",
   c.contact.hours ? `<li>${icon("clock")}<span>${esc(c.contact.hours)}</span></li>` : "",
 ]
   .filter(Boolean)
@@ -352,6 +354,8 @@ section + section{border-top:1px solid var(--line)}
 .contact-meta li{display:flex; align-items:flex-start; gap:.7rem; font-size:.9rem; color:var(--muted)}
 .contact-meta .ico{color:var(--gold); margin-top:.2rem}
 .contact-meta a:hover{color:var(--cream); text-decoration:underline; text-underline-offset:3px}
+.contact-person b{display:block; font-size:.95rem; font-weight:500; color:var(--cream)}
+.contact-person small{display:block; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
 .socials{display:grid; gap:.5rem; margin-top:1.6rem}
 .social{
   display:flex; align-items:center; gap:.75rem; padding:.6rem .85rem; border-radius:var(--r-sm);
@@ -398,6 +402,9 @@ section + section{border-top:1px solid var(--line)}
 .footer{border-top:1px solid var(--line); padding-block:clamp(2rem,4vw,2.8rem); position:relative; z-index:1}
 .footer-inner{display:grid; gap:1.6rem}
 .footer-brand p{color:var(--muted); font-size:.87rem; max-width:32ch; margin-top:.8rem}
+.footer-contact{font-size:.84rem !important; color:var(--muted)}
+.footer-contact a{color:var(--gold)}
+.footer-contact a:hover{text-decoration:underline; text-underline-offset:3px}
 .foot-socials{display:flex; gap:.45rem; margin-top:1rem}
 .foot-social{
   width:36px;height:36px;border-radius:8px; display:grid; place-items:center;
@@ -619,6 +626,7 @@ section + section{border-top:1px solid var(--line)}
           <span>${esc(c.name)}<small>${esc(c.tagline)}</small></span>
         </a>
         <p>${esc(c.footer.blurb)}</p>
+        <p class="footer-contact">${esc(c.contact.person.name)} · <a href="mailto:${esc(c.contact.email)}">${esc(c.contact.email)}</a></p>
         <div class="foot-socials">
             ${footerSocials}
         </div>
