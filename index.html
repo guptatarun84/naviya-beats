@@ -557,7 +557,7 @@ section + section{border-top:1px solid var(--line)}
     </div>
 
     <div class="form-card">
-      <form id="contactForm" action="" method="POST" data-mode="email" data-email="naviyabeats2202@gmail.com" data-sms="" novalidate>
+      <form id="contactForm" action="" method="POST" data-mode="email" data-email="naviyabeats2202@gmail.com" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -710,9 +710,7 @@ section + section{border-top:1px solid var(--line)}
           get('message')
         ].join('\n');
         window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        const sms = cf.dataset.sms;
-        cfMsg.innerHTML = 'Your email app should open now — press send and it comes straight to us.' +
-          (sms ? ' <a href="' + sms + '" style="color:var(--gold); text-decoration:underline">No email app? Text us instead.</a>' : '');
+        cfMsg.textContent = 'Your email app should open now — press send and it comes straight to us.';
         cfMsg.classList.add('show');
         return;
       }
