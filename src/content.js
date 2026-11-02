@@ -53,7 +53,7 @@ const SITE = {
       "We keep batches small, teach slowly, and repeat things until they feel natural. No auditions, no performance pressure — just good music and friendly people.",
     ],
     images: [
-      { src: "img/kathak-pose.jpg", alt: "Kathak dancer in an anarkali, arms raised" },
+      { src: "img/kathak-pose.jpg", alt: "Female dancer in a red skirt and gold-trimmed bodice, arm raised" },
       { src: "img/kathak-twirl.jpg", alt: "Dancer spinning in a lehenga" },
       { src: "img/big-class.jpg", alt: "A small class practising" },
     ],
@@ -154,6 +154,10 @@ const SITE = {
     // The person people should reach
     person: { name: "Pooja Gupta", role: "Studio contact" },
     email: "naviyabeats2202@gmail.com",
+    // Private SMS relay (see contact.form.mode = "sms" below).
+    // Use full international format with no + or spaces, e.g. "14088884271".
+    // NEVER printed on the page — only used by the form.
+    smsNumber: "",
     phone: "",
     hours: "Mon–Fri 6–9 PM · Sat 9 AM–1 PM",
     form: {
@@ -165,11 +169,11 @@ const SITE = {
       mode: "email",
       action: "",            // only used when mode is "endpoint"
       method: "POST",
-      // Optional: a WhatsApp number for people who prefer to message.
-      // Use full international format with no + or spaces, e.g. "919876543210".
-      // Leave "" to hide the WhatsApp button.
-      whatsapp: "",
-      whatsappText: "Hi Pooja, I'd like to book a trial class at Naviya Beats.",
+      // "sms": a button that opens the visitor's messaging app with the
+      //        message pre-typed to contact.smsNumber. No number is shown
+      //        on the page, but anyone who taps it can see the number.
+      //        Only works on phones, and it needs the visitor to press send.
+      smsText: "Hi Pooja, I'd like to book a trial class at Naviya Beats.",
       submitLabel: "Send message",
       note: "This opens your email app with the message ready to send.",
     },

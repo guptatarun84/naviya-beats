@@ -391,7 +391,7 @@ section + section{border-top:1px solid var(--line)}
   <div class="wrap about-grid">
     <div class="about-media">
       <figure class="about-img about-img--1 reveal">
-              <img src="img/kathak-pose.jpg" alt="Kathak dancer in an anarkali, arms raised" loading="lazy" decoding="async" />
+              <img src="img/kathak-pose.jpg" alt="Female dancer in a red skirt and gold-trimmed bodice, arm raised" loading="lazy" decoding="async" />
             </figure>
             <figure class="about-img about-img--2 reveal">
               <img src="img/kathak-twirl.jpg" alt="Dancer spinning in a lehenga" loading="lazy" decoding="async" />
@@ -557,7 +557,7 @@ section + section{border-top:1px solid var(--line)}
     </div>
 
     <div class="form-card">
-      <form id="contactForm" action="" method="POST" data-mode="email" data-email="naviyabeats2202@gmail.com" novalidate>
+      <form id="contactForm" action="" method="POST" data-mode="email" data-email="naviyabeats2202@gmail.com" data-sms="" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -578,7 +578,6 @@ section + section{border-top:1px solid var(--line)}
         <p class="form-note">This opens your email app with the message ready to send.</p>
         <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
       </form>
-      
 
       <div class="signup">
         <h3>Get class updates by email</h3>
@@ -711,7 +710,9 @@ section + section{border-top:1px solid var(--line)}
           get('message')
         ].join('\n');
         window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        cfMsg.textContent = 'Your email app should open now — press send and it comes straight to us.';
+        const sms = cf.dataset.sms;
+        cfMsg.innerHTML = 'Your email app should open now — press send and it comes straight to us.' +
+          (sms ? ' <a href="' + sms + '" style="color:var(--gold); text-decoration:underline">No email app? Text us instead.</a>' : '');
         cfMsg.classList.add('show');
         return;
       }

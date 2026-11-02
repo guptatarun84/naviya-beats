@@ -117,11 +117,10 @@ const contactMeta = [
   .filter(Boolean)
   .join("\n              ");
 
-const wa = c.contact.form.whatsapp || "";
-const whatsappBtn = wa
-  ? `<a class="btn btn--ghost whatsapp-btn" style="width:100%; margin-top:.6rem"
-        href="https://wa.me/${esc(wa)}?text=${encodeURIComponent(c.contact.form.whatsappText || "")}"
-        target="_blank" rel="noopener">${icon("whatsapp", "ico ico-sm")} Message us on WhatsApp</a>`
+// Private SMS relay: used by the form only, never displayed as text.
+const smsNum = (c.contact.smsNumber || "").replace(/[^0-9]/g, "");
+const smsHref = smsNum
+  ? `sms:+${smsNum}?&body=${encodeURIComponent(c.contact.form.smsText || "")}`
   : "";
 
 const t = c.theme;
@@ -590,7 +589,7 @@ section + section{border-top:1px solid var(--line)}
     </div>
 
     <div class="form-card">
-      <form id="contactForm" action="${esc(c.contact.form.action)}" method="${esc(c.contact.form.method)}" data-mode="${esc(c.contact.form.mode || "email")}" data-email="${esc(c.contact.email)}" novalidate>
+      <form id="contactForm" action="${esc(c.contact.form.action)}" method="${esc(c.contact.form.method)}" data-mode="${esc(c.contact.form.mode || "email")}" data-email="${esc(c.contact.email)}" data-sms="${esc(smsHref)}" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -611,7 +610,6 @@ section + section{border-top:1px solid var(--line)}
         <p class="form-note">${esc(c.contact.form.note)}</p>
         <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
       </form>
-      ${whatsappBtn}
 
       <div class="signup">
         <h3>${esc(c.contact.signup.label)}</h3>
@@ -740,7 +738,9 @@ section + section{border-top:1px solid var(--line)}
           get('message')
         ].join('\\n');
         window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        cfMsg.textContent = 'Your email app should open now — press send and it comes straight to us.';
+        const sms = cf.dataset.sms;
+        cfMsg.innerHTML = 'Your email app should open now — press send and it comes straight to us.' +
+          (sms ? ' <a href="' + sms + '" style="color:var(--gold); text-decoration:underline">No email app? Text us instead.</a>' : '');
         cfMsg.classList.add('show');
         return;
       }
