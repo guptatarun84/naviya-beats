@@ -209,6 +209,36 @@ section + section{border-top:1px solid var(--line)}
 .term span{font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
 .kathak-cta{margin-top:1.7rem}
 
+/* ---------- videos ---------- */
+.video-grid{display:grid; gap:clamp(1rem,2.4vw,1.4rem); grid-template-columns:1fr}
+.video-card h3{font-size:1.05rem; margin-top:.8rem; font-family:var(--font-b); font-weight:500; letter-spacing:0}
+.video-note{font-size:.82rem; color:var(--muted); margin-top:.15rem}
+.video-media{
+  position:relative; display:block; border-radius:var(--r-md); overflow:hidden;
+  aspect-ratio:16/10; background:var(--ink-2); border:1px solid var(--line);
+}
+.video-media img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease}
+.video-media:hover img{transform:scale(1.04)}
+.video-blank{display:block; width:100%; height:100%; background:linear-gradient(140deg, var(--ink-2), var(--ink))}
+.play-btn{
+  position:absolute; inset:0; margin:auto; width:52px; height:52px; border-radius:50%;
+  display:grid; place-items:center; color:var(--cream);
+  background:color-mix(in srgb, var(--ink) 55%, transparent);
+  border:1px solid color-mix(in srgb, var(--cream) 45%, transparent);
+  backdrop-filter:blur(4px); transition:background .25s, transform .25s;
+}
+.video-media:hover .play-btn{background:var(--accent); color:#1a0f08; transform:scale(1.06)}
+.video-media[aria-disabled="true"] .play-btn{opacity:.5}
+
+/* ---------- awards ---------- */
+.awards-grid{display:grid; gap:clamp(1.6rem,4vw,3rem); align-items:start}
+.awards-list{list-style:none; padding:0; margin:0; display:grid; gap:0}
+.award{display:flex; gap:clamp(.8rem,2vw,1.6rem); padding:1rem 0; border-top:1px solid var(--line); align-items:baseline}
+.award:last-child{border-bottom:1px solid var(--line)}
+.award-year{font-family:var(--font-d); font-size:1rem; color:var(--gold); flex:none; min-width:3.2rem}
+.award-main b{display:block; font-size:.98rem; font-weight:500}
+.award-main small{color:var(--muted); font-size:.82rem}
+
 /* ---------- testimonials ---------- */
 .quotes{display:grid; gap:clamp(1rem,2.4vw,1.3rem); grid-template-columns:1fr}
 .quote{
@@ -311,6 +341,7 @@ section + section{border-top:1px solid var(--line)}
   .quotes{grid-template-columns:repeat(2,1fr)}
   .quotes .quote:last-child{grid-column:1 / -1}
   .socials{grid-template-columns:repeat(2,1fr)}
+  .video-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (min-width:900px){
   :root{--nav-h:72px}
@@ -323,6 +354,8 @@ section + section{border-top:1px solid var(--line)}
   .quotes{grid-template-columns:repeat(3,1fr)}
   .quotes .quote:last-child{grid-column:auto}
   .kathak-grid{grid-template-columns:.8fr 1.2fr}
+  .video-grid{grid-template-columns:repeat(3,1fr)}
+  .awards-grid{grid-template-columns:.8fr 1.2fr}
   .contact-grid{grid-template-columns:.9fr 1.1fr}
   .footer-inner{grid-template-columns:1.4fr 1fr; align-items:start}
   .footer-links{justify-content:flex-end}
@@ -347,6 +380,8 @@ section + section{border-top:1px solid var(--line)}
       <a class="nav-link" href="#about">About</a>
         <a class="nav-link" href="#classes">Classes</a>
         <a class="nav-link" href="#kathak">Kathak</a>
+        <a class="nav-link" href="#videos">Videos</a>
+        <a class="nav-link" href="#awards">Awards</a>
         <a class="nav-link" href="#contact">Contact</a>
     </nav>
     <div class="nav-actions">
@@ -361,6 +396,8 @@ section + section{border-top:1px solid var(--line)}
   <a class="m-link" href="#about">About</a>
         <a class="m-link" href="#classes">Classes</a>
         <a class="m-link" href="#kathak">Kathak</a>
+        <a class="m-link" href="#videos">Videos</a>
+        <a class="m-link" href="#awards">Awards</a>
         <a class="m-link" href="#contact">Contact</a>
   <a class="btn btn--primary" href="#contact">Book a Class</a>
 </div>
@@ -476,6 +513,43 @@ section + section{border-top:1px solid var(--line)}
   </div>
 </section>
 
+<!-- ===== VIDEOS ===== -->
+<section id="videos">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Watch</p>
+      <h2>A few moments from the studio</h2>
+      <p>Class clips and performance videos. More added as we go.</p>
+    </div>
+    <div class="video-grid">
+          <article class="video-card reveal" style="--i:0">
+            <a class="video-media" href="#contact" aria-disabled="true" aria-label="Kathak basics — first tatkar">
+              <img src="img/ghungroo.jpg" alt="Kathak basics — first tatkar" loading="lazy" decoding="async" />
+              <span class="play-btn" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg></span>
+            </a>
+            <h3>Kathak basics — first tatkar</h3>
+            <p class="video-note">Beginner batch, week 2</p>
+          </article>
+          <article class="video-card reveal" style="--i:1">
+            <a class="video-media" href="#contact" aria-disabled="true" aria-label="Bollywood beginners">
+              <img src="img/kathak-twirl.jpg" alt="Bollywood beginners" loading="lazy" decoding="async" />
+              <span class="play-btn" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg></span>
+            </a>
+            <h3>Bollywood beginners</h3>
+            <p class="video-note">End-of-month routine</p>
+          </article>
+          <article class="video-card reveal" style="--i:2">
+            <a class="video-media" href="#contact" aria-disabled="true" aria-label="Annual showcase">
+              <img src="img/kathak-stage.jpg" alt="Annual showcase" loading="lazy" decoding="async" />
+              <span class="play-btn" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg></span>
+            </a>
+            <h3>Annual showcase</h3>
+            <p class="video-note">Studio performance</p>
+          </article>
+    </div>
+  </div>
+</section>
+
 <!-- ===== KATHAK ===== -->
 <section id="kathak">
   <div class="wrap kathak-grid">
@@ -496,6 +570,31 @@ section + section{border-top:1px solid var(--line)}
         <a class="btn btn--ghost" href="#contact">Join the beginners batch <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== AWARDS ===== -->
+<section id="awards">
+  <div class="wrap awards-grid">
+    <div>
+      <p class="eyebrow">Recognition</p>
+      <h2 class="section-head" style="margin:0">Awards &amp; milestones</h2>
+      <p style="color:var(--muted); margin-top:.9rem">Performances and honours along the way.</p>
+    </div>
+    <ul class="awards-list">
+              <li class="award reveal" style="--i:0">
+              <span class="award-year">2025</span>
+              <span class="award-main"><b>Add your first award</b><small>Organisation or event</small></span>
+            </li>
+              <li class="award reveal" style="--i:1">
+              <span class="award-year">2024</span>
+              <span class="award-main"><b>Add an award or milestone</b><small>Organisation or event</small></span>
+            </li>
+              <li class="award reveal" style="--i:2">
+              <span class="award-year">2023</span>
+              <span class="award-main"><b>Add an award or milestone</b><small>Organisation or event</small></span>
+            </li>
+    </ul>
   </div>
 </section>
 
@@ -611,6 +710,8 @@ section + section{border-top:1px solid var(--line)}
         <a href="#about">About</a>
         <a href="#classes">Classes</a>
         <a href="#kathak">Kathak</a>
+        <a href="#videos">Videos</a>
+        <a href="#awards">Awards</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>

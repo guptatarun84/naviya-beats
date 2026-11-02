@@ -40,6 +40,8 @@ const SITE = {
     { label: "About", href: "#about" },
     { label: "Classes", href: "#classes" },
     { label: "Kathak", href: "#kathak" },
+    { label: "Videos", href: "#videos" },
+    { label: "Awards", href: "#awards" },
     { label: "Contact", href: "#contact" },
   ],
   navCta: { label: "Book a Class", href: "#contact" },
@@ -115,6 +117,56 @@ const SITE = {
       { word: "Ghungroo", meaning: "the bells" },
     ],
     cta: { label: "Join the beginners batch", href: "#contact" },
+  },
+
+  // ---- Videos -------------------------------------------------
+  // Set `enabled: true` when you have clips ready.
+  // For each video either:
+  //   youtube: "https://www.youtube.com/watch?v=XXXXXXXXXXX"  (or a youtu.be link)
+  //   file:    "media/clip.mp4"                               (a file in the repo)
+  // The thumbnail is optional — for YouTube it is filled in automatically.
+  videos: {
+    enabled: true,
+    eyebrow: "Watch",
+    title: "A few moments from the studio",
+    sub: "Class clips and performance videos. More added as we go.",
+    items: [
+      {
+        title: "Kathak basics — first tatkar",
+        note: "Beginner batch, week 2",
+        youtube: "",
+        file: "",
+        thumb: "img/ghungroo.jpg",
+      },
+      {
+        title: "Bollywood beginners",
+        note: "End-of-month routine",
+        youtube: "",
+        file: "",
+        thumb: "img/kathak-twirl.jpg",
+      },
+      {
+        title: "Annual showcase",
+        note: "Studio performance",
+        youtube: "",
+        file: "",
+        thumb: "img/kathak-stage.jpg",
+      },
+    ],
+  },
+
+  // ---- Awards -------------------------------------------------
+  // One line per award. Add or remove freely.
+  awards: {
+    enabled: true,
+    eyebrow: "Recognition",
+    title: "Awards & milestones",
+    sub: "Performances and honours along the way.",
+    items: [
+      { year: "2025", title: "Add your first award", org: "Organisation or event" },
+      { year: "2024", title: "Add an award or milestone", org: "Organisation or event" },
+      { year: "2023", title: "Add an award or milestone", org: "Organisation or event" },
+    ],
   },
 
   // ---- Testimonials -------------------------------------------

@@ -76,6 +76,40 @@ const kathakTerms = c.kathak.terms
   .map((t) => `<li class="term reveal"><b>${esc(t.word)}</b><span>${esc(t.meaning)}</span></li>`)
   .join("\n              ");
 
+/* ---------- videos & awards ---------- */
+
+// Pull the 11-character id out of any YouTube URL shape.
+const ytId = (url = "") => {
+  const m = String(url).match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : "";
+};
+
+const videoCards = (c.videos.enabled ? c.videos.items : [])
+  .map((v, i) => {
+    const id = ytId(v.youtube);
+    const watch = id ? `https://www.youtube.com/watch?v=${id}` : (v.file || "#contact");
+    const thumb = v.thumb || (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "");
+    const isPlayable = Boolean(id || v.file);
+    return `<article class="video-card reveal" style="--i:${i}">
+            <a class="video-media" href="${esc(watch)}"${isPlayable ? ' target="_blank" rel="noopener"' : ' aria-disabled="true"'} aria-label="${esc(v.title)}">
+              ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.title)}" loading="lazy" decoding="async" />` : `<span class="video-blank"></span>`}
+              <span class="play-btn" aria-hidden="true">${icon("play", "ico")}</span>
+            </a>
+            <h3>${esc(v.title)}</h3>
+            ${v.note ? `<p class="video-note">${esc(v.note)}</p>` : ""}
+          </article>`;
+  })
+  .join("\n          ");
+
+const awardRows = (c.awards.enabled ? c.awards.items : [])
+  .map(
+    (a, i) => `<li class="award reveal" style="--i:${i}">
+              <span class="award-year">${esc(a.year)}</span>
+              <span class="award-main"><b>${esc(a.title)}</b><small>${esc(a.org)}</small></span>
+            </li>`
+  )
+  .join("\n              ");
+
 const testimonials = c.testimonials.items
   .map(
     (t, i) => `<figure class="quote reveal" style="--i:${i}">
@@ -329,6 +363,36 @@ section + section{border-top:1px solid var(--line)}
 .term span{font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
 .kathak-cta{margin-top:1.7rem}
 
+/* ---------- videos ---------- */
+.video-grid{display:grid; gap:clamp(1rem,2.4vw,1.4rem); grid-template-columns:1fr}
+.video-card h3{font-size:1.05rem; margin-top:.8rem; font-family:var(--font-b); font-weight:500; letter-spacing:0}
+.video-note{font-size:.82rem; color:var(--muted); margin-top:.15rem}
+.video-media{
+  position:relative; display:block; border-radius:var(--r-md); overflow:hidden;
+  aspect-ratio:16/10; background:var(--ink-2); border:1px solid var(--line);
+}
+.video-media img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease}
+.video-media:hover img{transform:scale(1.04)}
+.video-blank{display:block; width:100%; height:100%; background:linear-gradient(140deg, var(--ink-2), var(--ink))}
+.play-btn{
+  position:absolute; inset:0; margin:auto; width:52px; height:52px; border-radius:50%;
+  display:grid; place-items:center; color:var(--cream);
+  background:color-mix(in srgb, var(--ink) 55%, transparent);
+  border:1px solid color-mix(in srgb, var(--cream) 45%, transparent);
+  backdrop-filter:blur(4px); transition:background .25s, transform .25s;
+}
+.video-media:hover .play-btn{background:var(--accent); color:#1a0f08; transform:scale(1.06)}
+.video-media[aria-disabled="true"] .play-btn{opacity:.5}
+
+/* ---------- awards ---------- */
+.awards-grid{display:grid; gap:clamp(1.6rem,4vw,3rem); align-items:start}
+.awards-list{list-style:none; padding:0; margin:0; display:grid; gap:0}
+.award{display:flex; gap:clamp(.8rem,2vw,1.6rem); padding:1rem 0; border-top:1px solid var(--line); align-items:baseline}
+.award:last-child{border-bottom:1px solid var(--line)}
+.award-year{font-family:var(--font-d); font-size:1rem; color:var(--gold); flex:none; min-width:3.2rem}
+.award-main b{display:block; font-size:.98rem; font-weight:500}
+.award-main small{color:var(--muted); font-size:.82rem}
+
 /* ---------- testimonials ---------- */
 .quotes{display:grid; gap:clamp(1rem,2.4vw,1.3rem); grid-template-columns:1fr}
 .quote{
@@ -431,6 +495,7 @@ section + section{border-top:1px solid var(--line)}
   .quotes{grid-template-columns:repeat(2,1fr)}
   .quotes .quote:last-child{grid-column:1 / -1}
   .socials{grid-template-columns:repeat(2,1fr)}
+  .video-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (min-width:900px){
   :root{--nav-h:72px}
@@ -443,6 +508,8 @@ section + section{border-top:1px solid var(--line)}
   .quotes{grid-template-columns:repeat(3,1fr)}
   .quotes .quote:last-child{grid-column:auto}
   .kathak-grid{grid-template-columns:.8fr 1.2fr}
+  .video-grid{grid-template-columns:repeat(3,1fr)}
+  .awards-grid{grid-template-columns:.8fr 1.2fr}
   .contact-grid{grid-template-columns:.9fr 1.1fr}
   .footer-inner{grid-template-columns:1.4fr 1fr; align-items:start}
   .footer-links{justify-content:flex-end}
@@ -533,6 +600,20 @@ section + section{border-top:1px solid var(--line)}
   </div>
 </section>
 
+<!-- ===== VIDEOS ===== -->
+${c.videos.enabled ? `<section id="videos">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">${esc(c.videos.eyebrow)}</p>
+      <h2>${esc(c.videos.title)}</h2>
+      ${c.videos.sub ? `<p>${esc(c.videos.sub)}</p>` : ""}
+    </div>
+    <div class="video-grid">
+          ${videoCards}
+    </div>
+  </div>
+</section>` : ""}
+
 <!-- ===== KATHAK ===== -->
 <section id="kathak">
   <div class="wrap kathak-grid">
@@ -552,6 +633,20 @@ section + section{border-top:1px solid var(--line)}
     </div>
   </div>
 </section>
+
+<!-- ===== AWARDS ===== -->
+${c.awards.enabled ? `<section id="awards">
+  <div class="wrap awards-grid">
+    <div>
+      <p class="eyebrow">${esc(c.awards.eyebrow)}</p>
+      <h2 class="section-head" style="margin:0">${esc(c.awards.title)}</h2>
+      ${c.awards.sub ? `<p style="color:var(--muted); margin-top:.9rem">${esc(c.awards.sub)}</p>` : ""}
+    </div>
+    <ul class="awards-list">
+              ${awardRows}
+    </ul>
+  </div>
+</section>` : ""}
 
 <!-- ===== TESTIMONIALS ===== -->
 <section id="testimonials">

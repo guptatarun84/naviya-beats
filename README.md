@@ -36,6 +36,35 @@ in `src/content.js` at them, then rebuild. Recommended: ~1600px wide, JPEG, unde
 300KB each. To use a video hero instead of a still, set `hero.video` in
 `src/content.js` to e.g. `"media/hero.mp4"`.
 
+## Adding videos
+
+In `src/content.js`, find `videos`. Each item takes either a YouTube link or a local file:
+
+```js
+{
+  title: "Kathak basics — first tatkar",
+  note:  "Beginner batch, week 2",
+  youtube: "https://www.youtube.com/watch?v=XXXXXXXXXXX",  // or leave "" and use `file`
+  file:    "media/clip.mp4",                                // a file committed to the repo
+  thumb:   "img/ghungroo.jpg",                              // optional; YouTube thumbs are automatic
+}
+```
+
+The section appears between **Kathak** and **Testimonials** and is in the top nav.
+Set `videos.enabled: false` to hide it until you have clips ready.
+For a local file, drop the `.mp4` in a `media/` folder at the repo root and commit it
+(keep clips under ~10MB, or host them on YouTube and use the link instead).
+
+## Adding awards
+
+Find `awards` in `src/content.js` and add one line per award:
+
+```js
+{ year: "2025", title: "Best Choreography", org: "City Dance Festival" },
+```
+
+`awards.enabled: false` hides the section. Any number of rows works — the layout grows with the list.
+
 ## Forms
 
 The contact form and the email signup work in "preview" mode: they validate the
