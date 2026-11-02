@@ -1,0 +1,774 @@
+/* ============================================================
+   NAVIYA BEATS — page template. Edit copy in src/content.js
+   ============================================================ */
+const c = require("./content.js");
+
+const esc = (s = "") =>
+  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+const ICONS = {
+  spark:
+    '<path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9L12 2z"/><path d="M18.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z"/>',
+  music:
+    '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  heart:
+    '<path d="M20.8 5.6a5 5 0 00-7.1 0L12 7.3l-1.7-1.7a5 5 0 10-7.1 7.1L12 21.5l8.8-8.8a5 5 0 000-7.1z"/>',
+  star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9 2.9-6z"/>',
+  instagram:
+    '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
+  facebook: '<path d="M15 3h-2.5A4.5 4.5 0 008 7.5V10H5.5v4H8v7h4v-7h3l.8-4H12V7.5c0-.8.4-1 1-1h2V3z"/>',
+  youtube:
+    '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5l5 2.5-5 2.5v-5z"/>',
+  tiktok:
+    '<path d="M14.5 3v9.2a3.2 3.2 0 11-3.2-3.2c.3 0 .6 0 .9.1"/><path d="M14.5 5.2A5.3 5.3 0 0020 8.6"/>',
+  mail: '<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+  pin: '<path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  play: '<circle cx="12" cy="12" r="9.5"/><path d="M10 8.5l6 3.5-6 3.5v-7z"/>',
+};
+
+const icon = (name, cls = "ico") =>
+  `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`;
+
+/* ---------- pieces ---------- */
+
+const navLinks = c.nav
+  .map((l) => `<a class="nav-link" href="${esc(l.href)}">${esc(l.label)}</a>`)
+  .join("\n        ");
+
+const navMobileLinks = c.nav
+  .map((l) => `<a class="m-link" href="${esc(l.href)}">${esc(l.label)}</a>`)
+  .join("\n        ");
+
+const stats = c.hero.stats
+  .map((s) => `<div class="stat"><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`)
+  .join("\n          ");
+
+const features = c.about.features
+  .map(
+    (f) => `<li class="feature reveal">
+            <span class="feature-ico">${icon(f.icon)}</span>
+            <div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div>
+          </li>`
+  )
+  .join("\n          ");
+
+const aboutImages = c.about.images
+  .map(
+    (im, i) => `<figure class="about-img about-img--${i + 1} reveal">
+              <img src="${esc(im.src)}" alt="${esc(im.alt)}" loading="lazy" decoding="async" />
+            </figure>`
+  )
+  .join("\n            ");
+
+const classCards = c.classes.items
+  .map(
+    (k, i) => `<article class="card reveal" style="--i:${i}; --accent-var: var(--${esc(k.accent)})">
+            <div class="card-media">
+              <img src="${esc(k.image)}" alt="${esc(k.name)} class" loading="lazy" decoding="async" />
+              <span class="card-level">${esc(k.level)}</span>
+            </div>
+            <div class="card-body">
+              <h3>${esc(k.name)}</h3>
+              <p class="card-when">${icon("clock", "ico ico-sm")} ${esc(k.when)}</p>
+              <p>${esc(k.text)}</p>
+              <a class="card-link" href="#contact">Join this class ${icon("arrow", "ico ico-sm")}</a>
+            </div>
+          </article>`
+  )
+  .join("\n          ");
+
+const testimonials = c.testimonials.items
+  .map(
+    (t, i) => `<figure class="quote reveal" style="--i:${i}">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <blockquote>“${esc(t.quote)}”</blockquote>
+            <figcaption>
+              <span class="avatar" aria-hidden="true">${esc(t.initials)}</span>
+              <span><b>${esc(t.name)}</b><small>${esc(t.role)}</small></span>
+            </figcaption>
+          </figure>`
+  )
+  .join("\n          ");
+
+const socials = c.social
+  .map(
+    (s) => `<a class="social reveal" href="${esc(s.href)}" target="_blank" rel="noopener">
+            ${icon(s.icon, "ico social-ico")}
+            <span><b>${esc(s.label)}</b><small>${esc(s.handle)}</small></span>
+          </a>`
+  )
+  .join("\n            ");
+
+const footerSocials = c.social
+  .map(
+    (s) => `<a class="foot-social" href="${esc(s.href)}" target="_blank" rel="noopener" aria-label="${esc(s.label)}">${icon(s.icon)}</a>`
+  )
+  .join("\n            ");
+
+const contactMeta = [
+  c.contact.email
+    ? `<li>${icon("mail")}<a href="mailto:${esc(c.contact.email)}">${esc(c.contact.email)}</a></li>`
+    : "",
+  c.contact.phone ? `<li>${icon("mail")}<a href="tel:${esc(c.contact.phone)}">${esc(c.contact.phone)}</a></li>` : "",
+  c.contact.location ? `<li>${icon("pin")}<span>${esc(c.contact.location)}</span></li>` : "",
+  c.contact.hours ? `<li>${icon("clock")}<span>${esc(c.contact.hours)}</span></li>` : "",
+]
+  .filter(Boolean)
+  .join("\n              ");
+
+const t = c.theme;
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${esc(c.name)} — ${esc(c.tagline)}</title>
+<meta name="description" content="${esc(c.hero.sub)}" />
+<meta name="theme-color" content="${esc(t.ink)}" />
+<meta property="og:title" content="${esc(c.name)} — ${esc(c.tagline)}" />
+<meta property="og:description" content="${esc(c.hero.sub)}" />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=${esc(t.fontDisplay.replace(/ /g, "+"))}:opsz,wght@12..96,400..800&family=${esc(t.fontBody.replace(/ /g, "+"))}:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:${t.ink};
+  --ink-2:${t.ink2};
+  --cream:${t.cream};
+  --saffron:${t.saffron};
+  --coral:${t.coral};
+  --gold:${t.gold};
+  --plum:#A855F7;
+  --teal:#2DD4BF;
+  --muted:color-mix(in srgb, ${t.cream} 62%, transparent);
+  --line:color-mix(in srgb, ${t.cream} 14%, transparent);
+  --glass:color-mix(in srgb, ${t.cream} 6%, transparent);
+  --font-d:"${t.fontDisplay}", "Helvetica Neue", sans-serif;
+  --font-b:"${t.fontBody}", system-ui, -apple-system, sans-serif;
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+  --shadow:0 24px 60px -24px rgba(0,0,0,.75);
+  --maxw:1180px;
+  --pad:clamp(20px, 5vw, 56px);
+  --nav-h:70px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ink); color:var(--cream);
+  font-family:var(--font-b); font-size:clamp(15px,1.05vw,17px); line-height:1.65;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3{font-family:var(--font-d); font-weight:700; line-height:1.02; letter-spacing:-.03em; margin:0}
+p{margin:0}
+::selection{background:var(--saffron); color:#1a0f08}
+.ico{width:20px;height:20px;flex:none}
+.ico-sm{width:15px;height:15px}
+
+/* ---------- ambient background glow ---------- */
+.glow{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
+.glow::before,.glow::after{
+  content:""; position:absolute; width:52vw; aspect-ratio:1; border-radius:50%;
+  filter:blur(90px); opacity:.16;
+}
+.glow::before{background:var(--saffron); top:-14vw; right:-12vw}
+.glow::after{background:var(--coral); top:52vh; left:-18vw; opacity:.12}
+
+/* ---------- layout ---------- */
+.wrap{width:min(100% - 2*var(--pad), var(--maxw)); margin-inline:auto; position:relative; z-index:1}
+section{padding-block:clamp(64px,9vw,120px); position:relative; z-index:1}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.55rem; margin:0 0 1.1rem;
+  font-size:.72rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--saffron);
+}
+.eyebrow::before{content:""; width:26px; height:1px; background:currentColor; opacity:.8}
+.section-head{max-width:640px; margin-bottom:clamp(32px,4vw,56px)}
+.section-head h2{font-size:clamp(2rem,5vw,3.4rem)}
+.section-head p{color:var(--muted); margin-top:1rem; font-size:1.02rem}
+.grad-text{
+  background:linear-gradient(96deg,var(--saffron),var(--gold) 40%,var(--coral));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  --btn-bg:var(--saffron);
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  padding:.95rem 1.6rem; border-radius:999px; border:1px solid transparent;
+  font-family:var(--font-b); font-size:.95rem; font-weight:600; letter-spacing:-.01em;
+  cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background .25s, color .25s;
+  white-space:nowrap;
+}
+.btn--primary{
+  background:linear-gradient(120deg,var(--saffron),var(--coral)); color:#1a0d06;
+  box-shadow:0 14px 34px -14px color-mix(in srgb, var(--saffron) 80%, transparent);
+}
+.btn--primary:hover{transform:translateY(-2px); box-shadow:0 20px 42px -14px color-mix(in srgb, var(--coral) 75%, transparent)}
+.btn--ghost{background:var(--glass); color:var(--cream); border-color:var(--line); backdrop-filter:blur(10px)}
+.btn--ghost:hover{background:color-mix(in srgb, var(--cream) 12%, transparent); transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.99)}
+.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible{
+  outline:2px solid var(--gold); outline-offset:3px;
+}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky; top:0; z-index:50; height:var(--nav-h);
+  display:flex; align-items:center;
+  background:color-mix(in srgb, var(--ink) 55%, transparent);
+  border-bottom:1px solid transparent;
+  transition:background .35s, border-color .35s, backdrop-filter .35s;
+}
+.nav.is-stuck{
+  background:color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter:blur(18px) saturate(1.2);
+  border-bottom-color:var(--line);
+}
+.nav-inner{display:flex; align-items:center; justify-content:space-between; gap:1rem; width:100%}
+.brand{display:flex; align-items:center; gap:.7rem; font-family:var(--font-d); font-weight:700; font-size:1.06rem; letter-spacing:-.02em}
+.brand-mark{
+  width:38px;height:38px;border-radius:12px; display:grid; place-items:center;
+  background:linear-gradient(140deg,var(--saffron),var(--coral)); color:#1a0d06;
+  font-size:.86rem; font-weight:800; letter-spacing:-.03em;
+  box-shadow:0 8px 22px -10px var(--saffron);
+}
+.brand small{display:block; font-family:var(--font-b); font-size:.6rem; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); line-height:1}
+.nav-links{display:none; gap:.35rem; align-items:center}
+.nav-link{
+  padding:.5rem .85rem; border-radius:999px; font-size:.9rem; font-weight:500; color:var(--muted);
+  transition:color .2s, background .2s;
+}
+.nav-link:hover,.nav-link.active{color:var(--cream); background:var(--glass)}
+.nav-actions{display:flex; align-items:center; gap:.5rem}
+.nav-cta{display:none}
+.burger{
+  width:42px;height:42px;border-radius:12px; display:grid; place-items:center; gap:5px;
+  background:var(--glass); border:1px solid var(--line); color:var(--cream); cursor:pointer;
+}
+.burger span{display:block; width:17px; height:1.6px; background:currentColor; border-radius:2px; transition:transform .3s, opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
+.mobile-menu{
+  position:fixed; inset:var(--nav-h) 0 auto 0; z-index:49; padding:1.2rem var(--pad) 2rem;
+  background:color-mix(in srgb, var(--ink) 96%, transparent); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line); display:grid; gap:.2rem;
+  transform:translateY(-12px); opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
+}
+.mobile-menu.open{opacity:1; transform:none; pointer-events:auto}
+.m-link{padding:.9rem .2rem; font-family:var(--font-d); font-size:1.35rem; border-bottom:1px solid var(--line)}
+.mobile-menu .btn{margin-top:1.1rem}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative; min-height:min(92svh,860px); display:flex; align-items:flex-end;
+  padding-block:0; margin-top:calc(-1 * var(--nav-h));
+  padding-top:calc(var(--nav-h) + 4rem);
+  overflow:hidden; isolation:isolate;
+}
+.hero-media{position:absolute; inset:0; z-index:-2}
+.hero-media img,.hero-media video{
+  width:100%; height:100%; object-fit:cover; object-position:50% 45%;
+  animation:slowZoom 24s ease-in-out infinite alternate;
+}
+@keyframes slowZoom{from{transform:scale(1.02)}to{transform:scale(1.13)}}
+.hero-media::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(90% 80% at 78% 10%, rgba(20,15,23,.15), transparent 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--ink) 82%, transparent) 0%, color-mix(in srgb, var(--ink) 40%, transparent) 38%, color-mix(in srgb, var(--ink) 92%, transparent) 88%, var(--ink) 100%);
+}
+.hero-inner{padding-bottom:clamp(2.5rem,7vw,5rem); max-width:760px}
+.hero h1{
+  font-size:clamp(2.9rem, 9.5vw, 6.6rem); font-weight:800; letter-spacing:-.045em;
+  margin:.2rem 0 0;
+}
+.hero h1 .line{display:block}
+.hero h1 .accent{
+  background:linear-gradient(96deg,var(--gold),var(--saffron) 45%,var(--coral));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 10px 40px color-mix(in srgb, var(--coral) 30%, transparent));
+}
+.hero p.lede{color:color-mix(in srgb, var(--cream) 80%, transparent); margin-top:1.15rem; max-width:46ch; font-size:clamp(1rem,1.6vw,1.14rem)}
+.hero-cta{display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.9rem}
+.hero-stats{
+  display:flex; flex-wrap:wrap; gap:clamp(1.2rem,4vw,2.8rem);
+  margin-top:clamp(2rem,5vw,3rem); padding-top:1.5rem; border-top:1px solid var(--line);
+}
+.stat b{display:block; font-family:var(--font-d); font-size:1.6rem; letter-spacing:-.03em; line-height:1}
+.stat span{font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.scroll-hint{
+  position:absolute; right:var(--pad); bottom:clamp(2rem,6vw,3.5rem); display:none;
+  writing-mode:vertical-rl; font-size:.68rem; letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+}
+.scroll-hint::after{content:""; display:block; width:1px; height:52px; margin:.8rem auto 0; background:linear-gradient(var(--saffron), transparent)}
+
+/* ---------- marquee ---------- */
+.marquee{
+  border-block:1px solid var(--line); background:color-mix(in srgb, var(--ink-2) 70%, transparent);
+  overflow:hidden; padding-block:.9rem; position:relative; z-index:1;
+}
+.marquee-track{display:flex; width:max-content; gap:2.6rem; animation:marquee 32s linear infinite}
+.marquee-track span{
+  font-family:var(--font-d); font-size:clamp(.95rem,2vw,1.15rem); font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:color-mix(in srgb, var(--cream) 55%, transparent);
+  display:inline-flex; align-items:center; gap:2.6rem; white-space:nowrap;
+}
+.marquee-track span::after{content:"✦"; color:var(--saffron); font-size:.8em}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+/* ---------- about ---------- */
+.about-grid{display:grid; gap:clamp(2rem,5vw,4rem); align-items:center}
+.about-media{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(.6rem,1.6vw,1rem)}
+.about-img{margin:0; border-radius:var(--r-md); overflow:hidden; background:var(--ink-2)}
+.about-img img{width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.about-img:hover img{transform:scale(1.05)}
+.about-img--1{grid-row:span 2; aspect-ratio:3/4; border-radius:var(--r-lg)}
+.about-img--2,.about-img--3{aspect-ratio:4/3}
+.about-img--2{margin-top:clamp(1rem,4vw,2.4rem)}
+.about-body p{color:var(--muted); margin-top:1rem}
+.features{list-style:none; padding:0; margin:2rem 0 0; display:grid; gap:.2rem}
+.feature{display:flex; gap:1rem; padding:1rem 0; border-top:1px solid var(--line)}
+.feature-ico{
+  width:40px;height:40px;flex:none; border-radius:12px; display:grid; place-items:center;
+  background:var(--glass); border:1px solid var(--line); color:var(--saffron);
+}
+.feature h3{font-size:1rem; letter-spacing:-.01em}
+.feature p{font-size:.88rem; color:var(--muted); margin-top:.15rem}
+
+/* ---------- classes ---------- */
+.classes{background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink-2) 55%, transparent) 20%, transparent)}
+.cards{display:grid; gap:clamp(1rem,2.4vw,1.5rem); grid-template-columns:1fr}
+.card{
+  position:relative; border-radius:var(--r-lg); overflow:hidden;
+  background:color-mix(in srgb, var(--ink-2) 88%, transparent);
+  border:1px solid var(--line);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .45s, box-shadow .45s;
+  display:flex; flex-direction:column;
+}
+.card::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:2;
+  background:linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--accent-var) 22%, transparent));
+  opacity:0; transition:opacity .45s;
+}
+.card:hover{transform:translateY(-6px); border-color:color-mix(in srgb, var(--accent-var) 45%, transparent); box-shadow:var(--shadow)}
+.card:hover::before{opacity:1}
+.card-media{position:relative; aspect-ratio:16/11; overflow:hidden}
+.card-media img{width:100%;height:100%;object-fit:cover; transition:transform .8s cubic-bezier(.2,.8,.2,1), filter .5s; filter:saturate(.92)}
+.card:hover .card-media img{transform:scale(1.06); filter:saturate(1.1)}
+.card-media::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--ink-2) 92%, transparent))}
+.card-level{
+  position:absolute; left:1rem; bottom:1rem; z-index:1;
+  padding:.34rem .8rem; border-radius:999px; font-size:.7rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase;
+  background:color-mix(in srgb, var(--ink) 70%, transparent); backdrop-filter:blur(8px);
+  border:1px solid color-mix(in srgb, var(--accent-var) 55%, transparent); color:color-mix(in srgb, var(--accent-var) 88%, white);
+}
+.card-body{padding:1.25rem clamp(1.1rem,2.4vw,1.6rem) 1.6rem; display:flex; flex-direction:column; gap:.55rem; flex:1}
+.card-body h3{font-size:clamp(1.35rem,3vw,1.7rem)}
+.card-when{display:flex; align-items:center; gap:.45rem; font-size:.8rem; color:var(--muted); letter-spacing:.02em}
+.card-when .ico{color:var(--accent-var)}
+.card-body p{font-size:.9rem; color:var(--muted)}
+.card-link{
+  margin-top:auto; padding-top:.9rem; display:inline-flex; align-items:center; gap:.4rem;
+  font-size:.85rem; font-weight:600; color:var(--cream);
+}
+.card-link .ico{transition:transform .3s}
+.card:hover .card-link .ico{transform:translateX(4px)}
+.card-link:hover{color:var(--accent-var)}
+
+/* ---------- testimonials ---------- */
+.quotes{display:grid; gap:clamp(1rem,2.4vw,1.4rem); grid-template-columns:1fr}
+.quote{
+  margin:0; padding:clamp(1.4rem,3vw,2rem); border-radius:var(--r-lg);
+  background:linear-gradient(160deg, color-mix(in srgb, var(--cream) 7%, transparent), color-mix(in srgb, var(--cream) 3%, transparent));
+  border:1px solid var(--line); display:flex; flex-direction:column; gap:1rem;
+  transition:transform .4s, border-color .4s;
+}
+.quote:hover{transform:translateY(-4px); border-color:color-mix(in srgb, var(--saffron) 35%, transparent)}
+.stars{color:var(--gold); letter-spacing:.18em; font-size:.85rem}
+.quote blockquote{
+  margin:0; font-family:var(--font-d); font-weight:500; font-size:clamp(1.05rem,2.2vw,1.22rem);
+  line-height:1.45; letter-spacing:-.015em; color:color-mix(in srgb, var(--cream) 92%, transparent);
+}
+.quote figcaption{display:flex; align-items:center; gap:.75rem; margin-top:auto; padding-top:.6rem}
+.avatar{
+  width:40px;height:40px;border-radius:50%; flex:none; display:grid; place-items:center;
+  font-size:.78rem; font-weight:700; color:#1a0d06;
+  background:linear-gradient(140deg,var(--gold),var(--saffron));
+}
+.quote figcaption b{display:block; font-size:.9rem; font-weight:600}
+.quote figcaption small{color:var(--muted); font-size:.78rem}
+
+/* ---------- contact ---------- */
+.contact{background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink-2) 70%, transparent) 30%, transparent)}
+.contact-grid{display:grid; gap:clamp(2rem,5vw,3.5rem); align-items:start}
+.contact-meta{list-style:none; padding:0; margin:2rem 0 0; display:grid; gap:.9rem}
+.contact-meta li{display:flex; align-items:flex-start; gap:.8rem; font-size:.92rem; color:var(--muted)}
+.contact-meta .ico{color:var(--saffron); margin-top:.2rem}
+.contact-meta a:hover{color:var(--cream); text-decoration:underline; text-underline-offset:3px}
+.socials{display:grid; gap:.5rem; margin-top:2rem}
+.social{
+  display:flex; align-items:center; gap:.85rem; padding:.7rem .95rem; border-radius:var(--r-md);
+  border:1px solid var(--line); background:var(--glass); transition:background .25s, border-color .25s, transform .25s;
+}
+.social:hover{background:color-mix(in srgb, var(--cream) 10%, transparent); border-color:color-mix(in srgb, var(--saffron) 40%, transparent); transform:translateX(3px)}
+.social-ico{color:var(--saffron)}
+.social b{display:block; font-size:.88rem; font-weight:600}
+.social small{color:var(--muted); font-size:.76rem}
+
+.form-card{
+  padding:clamp(1.4rem,3.5vw,2.2rem); border-radius:var(--r-lg);
+  background:color-mix(in srgb, var(--ink-2) 90%, transparent);
+  border:1px solid var(--line); box-shadow:var(--shadow);
+}
+.field{margin-bottom:1rem}
+.field label{display:block; font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.45rem}
+.field input,.field textarea{
+  width:100%; padding:.85rem 1rem; border-radius:var(--r-sm);
+  background:color-mix(in srgb, var(--ink) 70%, transparent);
+  border:1px solid var(--line); color:var(--cream); font-family:inherit; font-size:.95rem;
+  transition:border-color .25s, background .25s;
+}
+.field textarea{min-height:120px; resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:color-mix(in srgb, var(--cream) 35%, transparent)}
+.field input:focus,.field textarea:focus{outline:none; border-color:var(--saffron); background:color-mix(in srgb, var(--ink) 90%, transparent)}
+.form-note{font-size:.8rem; color:var(--muted); margin-top:.9rem}
+.form-note a{color:var(--saffron); text-decoration:underline; text-underline-offset:2px}
+.form-msg{
+  display:none; margin-top:1rem; padding:.85rem 1rem; border-radius:var(--r-sm);
+  font-size:.88rem; background:color-mix(in srgb, var(--teal) 14%, transparent);
+  border:1px solid color-mix(in srgb, var(--teal) 40%, transparent); color:color-mix(in srgb, var(--teal) 80%, white);
+}
+.form-msg.show{display:block}
+.signup{
+  margin-top:1.6rem; padding-top:1.4rem; border-top:1px solid var(--line);
+}
+.signup h3{font-size:.95rem; font-family:var(--font-b); font-weight:600; letter-spacing:0}
+.signup-row{display:flex; gap:.5rem; margin-top:.7rem; flex-wrap:wrap}
+.signup-row input{
+  flex:1 1 160px; padding:.8rem 1rem; border-radius:999px;
+  background:color-mix(in srgb, var(--ink) 70%, transparent); border:1px solid var(--line);
+  color:var(--cream); font-family:inherit; font-size:.9rem;
+}
+.signup-row input:focus{outline:none; border-color:var(--saffron)}
+.signup-row .btn{padding:.8rem 1.35rem; font-size:.85rem}
+
+/* ---------- footer ---------- */
+.footer{border-top:1px solid var(--line); padding-block:clamp(2.4rem,5vw,3.5rem); position:relative; z-index:1}
+.footer-inner{display:grid; gap:2rem}
+.footer-brand p{color:var(--muted); font-size:.9rem; max-width:34ch; margin-top:.9rem}
+.foot-socials{display:flex; gap:.5rem; margin-top:1.2rem}
+.foot-social{
+  width:40px;height:40px;border-radius:12px; display:grid; place-items:center;
+  border:1px solid var(--line); background:var(--glass); color:var(--muted);
+  transition:color .25s, background .25s, transform .25s;
+}
+.foot-social:hover{color:var(--saffron); background:color-mix(in srgb, var(--cream) 10%, transparent); transform:translateY(-2px)}
+.footer-links{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; align-content:start}
+.footer-links a{font-size:.88rem; color:var(--muted); transition:color .2s}
+.footer-links a:hover{color:var(--cream)}
+.footer-bottom{
+  margin-top:2rem; padding-top:1.4rem; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; justify-content:space-between;
+  font-size:.78rem; color:color-mix(in srgb, var(--cream) 45%, transparent);
+}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); transition-delay:calc(var(--i,0) * 90ms)}
+.reveal.in{opacity:1; transform:none}
+
+/* ---------- responsive ---------- */
+@media (min-width:600px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .quotes{grid-template-columns:repeat(2,1fr)}
+  .quotes .quote:last-child{grid-column:1 / -1}
+  .socials{grid-template-columns:repeat(2,1fr)}
+}
+@media (min-width:900px){
+  :root{--nav-h:80px}
+  .nav-links{display:flex}
+  .nav-cta{display:inline-flex}
+  .burger{display:none}
+  .mobile-menu{display:none}
+  .scroll-hint{display:block}
+  .about-grid{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:repeat(4,1fr)}
+  .cards .card:nth-child(even){transform:translateY(28px)}
+  .cards .card:nth-child(even):hover{transform:translateY(22px)}
+  .quotes{grid-template-columns:repeat(3,1fr)}
+  .quotes .quote:last-child{grid-column:auto}
+  .contact-grid{grid-template-columns:.9fr 1.1fr}
+  .footer-inner{grid-template-columns:1.4fr 1fr; align-items:start}
+  .footer-links{justify-content:flex-end}
+}
+@media (min-width:1200px){
+  .hero-inner{max-width:820px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important}
+  .reveal{opacity:1; transform:none}
+}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="${esc(c.name)} home">
+      <span class="brand-mark">${esc(c.logoMark)}</span>
+      <span>${esc(c.name)}<small>${esc(c.tagline)}</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      ${navLinks}
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn--primary nav-cta" href="${esc(c.navCta.href)}">${esc(c.navCta.label)}</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  ${navMobileLinks}
+  <a class="btn btn--primary" href="${esc(c.navCta.href)}">${esc(c.navCta.label)}</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-media">
+    ${
+      c.hero.video
+        ? `<video autoplay muted loop playsinline poster="${esc(c.hero.poster)}"><source src="${esc(c.hero.video)}" type="video/mp4" /></video>`
+        : `<img src="${esc(c.hero.image)}" alt="Dancer mid-movement in neon light" fetchpriority="high" />`
+    }
+  </div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
+    <h1>
+      <span class="line">Dance Your</span>
+      <span class="line accent">Heart Out</span>
+    </h1>
+    <p class="lede">${esc(c.hero.sub)}</p>
+    <div class="hero-cta">
+      <a class="btn btn--primary" href="${esc(c.hero.ctaPrimary.href)}">${esc(c.hero.ctaPrimary.label)} ${icon("arrow", "ico ico-sm")}</a>
+      <a class="btn btn--ghost" href="${esc(c.hero.ctaSecondary.href)}">${icon("play", "ico ico-sm")} ${esc(c.hero.ctaSecondary.label)}</a>
+    </div>
+    <div class="hero-stats">
+      ${stats}
+    </div>
+  </div>
+  <span class="scroll-hint" aria-hidden="true">Scroll</span>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Bollywood</span><span>Hip-Hop</span><span>Contemporary</span><span>Kids</span><span>Wedding Choreo</span><span>Open Sessions</span>
+    <span>Bollywood</span><span>Hip-Hop</span><span>Contemporary</span><span>Kids</span><span>Wedding Choreo</span><span>Open Sessions</span>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-media">
+      ${aboutImages}
+    </div>
+    <div class="about-body">
+      <p class="eyebrow">${esc(c.about.eyebrow)}</p>
+      <h2 class="section-head" style="margin:0">${esc(c.about.title)}</h2>
+      ${c.about.body.map((p) => `<p>${esc(p)}</p>`).join("\n      ")}
+      <ul class="features">
+          ${features}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLASSES ===== -->
+<section id="classes" class="classes">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">${esc(c.classes.eyebrow)}</p>
+      <h2>${esc(c.classes.title)}</h2>
+      <p>${esc(c.classes.sub)}</p>
+    </div>
+    <div class="cards">
+          ${classCards}
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">${esc(c.testimonials.eyebrow)}</p>
+      <h2>${esc(c.testimonials.title)}</h2>
+    </div>
+    <div class="quotes">
+          ${testimonials}
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <p class="eyebrow">${esc(c.contact.eyebrow)}</p>
+      <h2 class="section-head" style="margin:0">${esc(c.contact.title)}</h2>
+      <p style="color:var(--muted); margin-top:1rem">${esc(c.contact.sub)}</p>
+      <ul class="contact-meta">
+              ${contactMeta}
+      </ul>
+      <div class="socials">
+            ${socials}
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="contactForm" action="${esc(c.contact.form.action)}" method="${esc(c.contact.form.method)}" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+        </div>
+        <div class="field">
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" placeholder="you@email.com" required />
+        </div>
+        <div class="field">
+          <label for="interest">I'm interested in</label>
+          <input id="interest" name="interest" type="text" placeholder="Bollywood, hip-hop, kids class…" />
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us a little about you — and when you'd like to dance."></textarea>
+        </div>
+        <button class="btn btn--primary" type="submit" style="width:100%">${esc(c.contact.form.submitLabel)} ${icon("arrow", "ico ico-sm")}</button>
+        <p class="form-note">${esc(c.contact.form.note)}</p>
+        <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="signup">
+        <h3>${esc(c.contact.signup.label)}</h3>
+        <form class="signup-row" id="signupForm" action="${esc(c.contact.signup.action)}" method="POST" novalidate>
+          <input type="email" name="email" placeholder="${esc(c.contact.signup.placeholder)}" aria-label="Email address" required />
+          <button class="btn btn--primary" type="submit">${esc(c.contact.signup.button)}</button>
+        </form>
+        <div class="form-msg" id="signupMsg" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <span class="brand-mark">${esc(c.logoMark)}</span>
+          <span>${esc(c.name)}<small>${esc(c.tagline)}</small></span>
+        </a>
+        <p>${esc(c.footer.blurb)}</p>
+        <div class="foot-socials">
+            ${footerSocials}
+        </div>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        ${c.nav.map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join("\n        ")}
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>${esc(c.footer.copyright)}</span>
+      <span>${esc(c.tagline)}</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobileMenu');
+  const closeMenu = () => { burger.setAttribute('aria-expanded', 'false'); menu.classList.remove('open'); document.body.style.overflow = ''; };
+  burger.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    menu.classList.toggle('open', !open);
+    document.body.style.overflow = !open ? 'hidden' : '';
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+
+  // active nav link
+  const sections = [...document.querySelectorAll('section[id]')];
+  const links = [...document.querySelectorAll('.nav-link')];
+  if ('IntersectionObserver' in window && sections.length) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + en.target.id));
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => spy.observe(s));
+  }
+
+  // forms — graceful demo mode when no action is set
+  const bind = (form, msg, text) => {
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      const email = form.querySelector('input[type=email]');
+      if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.value)) {
+        e.preventDefault(); email.focus();
+        msg.textContent = 'Please enter a valid email address.';
+        msg.classList.add('show');
+        return;
+      }
+      if (!form.getAttribute('action')) {
+        e.preventDefault();
+        msg.textContent = text;
+        msg.classList.add('show');
+        form.reset();
+      }
+    });
+  };
+  bind(document.getElementById('contactForm'), document.getElementById('formMsg'), 'Thanks! This is a preview build — connect a form endpoint to start receiving messages.');
+  bind(document.getElementById('signupForm'), document.getElementById('signupMsg'), 'You\\'re on the list! (Preview build — connect an endpoint to go live.)');
+})();
+</script>
+</body>
+</html>
+`;
+
+require("fs").writeFileSync(require("path").join(__dirname, "..", "index.html"), html);
+console.log("Built index.html", (html.length / 1024).toFixed(1) + "KB");
