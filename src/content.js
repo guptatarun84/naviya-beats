@@ -14,12 +14,16 @@ const SITE = {
 
   // ---- Hero --------------------------------------------------
   hero: {
-    image: "img/hero-night.jpg", // replace with your own photo
+    image: "img/kathak-stage.jpg", // replace with your own photo
     video: "", // optional: "media/hero.mp4" — fills the hero if set
-    poster: "img/hero-night.jpg",
-    eyebrow: "Studio · Stage · Community",
+    poster: "img/kathak-stage.jpg",
+    // The hero photo is anchored right on desktop (text sits left);
+    // change to "50% 45%" to centre it instead.
+    imagePosition: "62% 30%",
+    eyebrow: "Bollywood · Kathak · Folk · Hip-Hop",
     headline: "Dance Your Heart Out",
-    sub: "Bollywood, hip-hop, contemporary and more — high-energy classes for every level, in a room that feels like home.",
+    // Set to true to show the headline in one line instead of two
+    sub: "Kathak's spinning grace, Bollywood's heartbeat, and a room full of rhythm. Classes for every level — come as you are, leave lighter.",
     ctaPrimary: { label: "Book a Class", href: "#contact" },
     ctaSecondary: { label: "Get Tickets", href: "#contact" },
     // Small trust row under the buttons
@@ -34,6 +38,7 @@ const SITE = {
   nav: [
     { label: "About", href: "#about" },
     { label: "Classes", href: "#classes" },
+    { label: "Kathak", href: "#kathak" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Contact", href: "#contact" },
   ],
@@ -44,17 +49,17 @@ const SITE = {
     eyebrow: "About the studio",
     title: "A studio built for the joy of moving",
     body: [
-      "Naviya Beats is a home for dancers who come for the choreography and stay for the people. We teach with warmth, precision and a lot of bass — whether you've never danced before or you're prepping for a stage.",
-      "Every class is led by working performers and choreographers who break things down step by step, so you leave feeling capable, not just sweaty.",
+      "Naviya Beats is a home for dancers who come for the choreography and stay for the people. We teach with warmth, precision and a lot of dhol — whether you've never danced before or you're prepping for a stage.",
+      "Rooted in Indian rhythm and open to everything else, our teachers break each step down until it feels natural. You leave feeling capable, not just sweaty.",
     ],
     images: [
-      { src: "img/big-studio.jpg", alt: "Dancers warming up in the studio" },
+      { src: "img/kathak-pose.jpg", alt: "Kathak-trained dancer holding a classical pose" },
+      { src: "img/kathak-twirl.jpg", alt: "Dancer spinning in a white and gold lehenga" },
       { src: "img/big-class.jpg", alt: "A full class mid-routine" },
-      { src: "img/big-contemporary.jpg", alt: "Contemporary dancer mid-pose" },
     ],
     features: [
       { icon: "spark", title: "All levels welcome", text: "Beginner-friendly breakdowns in every style." },
-      { icon: "music", title: "Live music energy", text: "DJ-led sessions and live percussion nights." },
+      { icon: "music", title: "Dhol & tabla energy", text: "Live percussion nights and DJ-led sessions." },
       { icon: "heart", title: "Small, warm groups", text: "Capped class sizes so you get real feedback." },
       { icon: "star", title: "Stage opportunities", text: "Annual showcase and community performances." },
     ],
@@ -75,17 +80,33 @@ const SITE = {
         accent: "saffron",
       },
       {
+        name: "Kathak",
+        level: "Beginners only",
+        when: "Tue & Thu · 7:30 PM",
+        text: "Start from the very first step — no experience needed. Tatkar, ghungroo and your first chakkar, taught slowly with live tabla.",
+        image: "img/ghungroo.jpg",
+        accent: "gold",
+      },
+      {
+        name: "Folk & Garba",
+        level: "All levels",
+        when: "Fri · 7:00 PM",
+        text: "Garba, Bhangra and Dandiya — big circle energy, no partner needed.",
+        image: "img/kathak-twirl.jpg",
+        accent: "coral",
+      },
+      {
         name: "Hip-Hop",
         level: "Beginner → Advanced",
-        when: "Tue & Thu · 8:00 PM",
+        when: "Tue & Thu · 8:30 PM",
         text: "Grooves, foundations and full choreography with a crew-like room energy.",
         image: "img/big-backbend.jpg",
-        accent: "coral",
+        accent: "teal",
       },
       {
         name: "Contemporary",
         level: "Intermediate",
-        when: "Fri · 6:30 PM",
+        when: "Sat · 4:00 PM",
         text: "Floorwork, breath and storytelling — movement that makes room for feeling.",
         image: "img/big-contemporary.jpg",
         accent: "plum",
@@ -96,9 +117,31 @@ const SITE = {
         when: "Sat · 10:00 AM",
         text: "Playful, confidence-building classes that end with a mini performance for parents.",
         image: "img/big-class.jpg",
-        accent: "teal",
+        accent: "saffron",
       },
     ],
+  },
+
+  // ---- Kathak feature (the "Indian classical" moment) ---------
+  kathak: {
+    eyebrow: "Rooted in tradition",
+    titleLead: "The grace of ",
+    titleEm: "Kathak",
+    body: [
+      "Kathak is rhythm you can see: the sharp click of tatkar under ghungroo, a pirouette that gathers speed until the skirt becomes a wheel of colour, and gestures that tell a story without a word.",
+      "Our Kathak classes are for complete beginners. We start from zero — stance, tatkar, the first mudras — and build slowly, with live tabla so the taal lives in the room, not in a speaker.",
+    ],
+    image: "img/kathak-pose.jpg",
+    image2: "img/kathak-stage.jpg",
+    // Small vocabulary chips — nice to keep, easy to edit
+    terms: [
+      { word: "Tatkar", meaning: "the footwork" },
+      { word: "Chakkar", meaning: "the spin" },
+      { word: "Ghungroo", meaning: "the bells" },
+      { word: "Mudra", meaning: "the gesture" },
+      { word: "Taal", meaning: "the cycle" },
+    ],
+    cta: { label: "Join the beginners batch", href: "#contact" },
   },
 
   // ---- Testimonials ------------------------------------------
@@ -115,10 +158,10 @@ const SITE = {
       },
       {
         quote:
-          "I'd never danced before and was terrified. Three months later I'm in the Friday hip-hop crew. That says everything.",
-        name: "Marcus L.",
-        role: "Hip-Hop, beginner track",
-        initials: "ML",
+          "The Kathak classes are the real thing — proper taal, proper ghungroo, and a teacher who explains why a step works. I drive an hour for it.",
+        name: "Meera K.",
+        role: "Kathak, two years in",
+        initials: "MK",
       },
       {
         quote:
@@ -171,15 +214,15 @@ const SITE = {
   },
 
   // ---- Theme (colours + fonts) -------------------------------
-  // Warm, vibrant, still classy: saffron/ember on deep ink.
+  // Marigold & henna on deep indigo: warm, vibrant, still classy.
   theme: {
-    ink: "#140F17", // page background (near-black plum)
-    ink2: "#1E1722", // raised panels
-    cream: "#FFF6EC", // primary text
-    saffron: "#FF8A3D", // primary accent
-    coral: "#FF4D6D", // secondary accent
-    gold: "#FFC857", // highlight / stars
-    fontDisplay: "Bricolage Grotesque", // headings
+    ink: "#120A14", // page background (deep aubergine-black)
+    ink2: "#1C1020", // raised panels
+    cream: "#FFF4E4", // primary text
+    saffron: "#FF8A3D", // primary accent (marigold)
+    coral: "#E2384B", // secondary accent (kumkum red)
+    gold: "#F5C15C", // highlight / stars / classical accents
+    fontDisplay: "Fraunces", // headings — warm, slightly Indian-modern serif
     fontBody: "Inter", // body copy
   },
 };
