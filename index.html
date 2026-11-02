@@ -391,7 +391,7 @@ section + section{border-top:1px solid var(--line)}
   <div class="wrap about-grid">
     <div class="about-media">
       <figure class="about-img about-img--1 reveal">
-              <img src="img/kathak-pose.jpg" alt="Dancer holding a classical pose" loading="lazy" decoding="async" />
+              <img src="img/kathak-pose.jpg" alt="Kathak dancer in an anarkali, arms raised" loading="lazy" decoding="async" />
             </figure>
             <figure class="about-img about-img--2 reveal">
               <img src="img/kathak-twirl.jpg" alt="Dancer spinning in a lehenga" loading="lazy" decoding="async" />
@@ -557,7 +557,7 @@ section + section{border-top:1px solid var(--line)}
     </div>
 
     <div class="form-card">
-      <form id="contactForm" action="" method="POST" novalidate>
+      <form id="contactForm" action="" method="POST" data-mode="email" data-email="naviyabeats2202@gmail.com" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -575,9 +575,10 @@ section + section{border-top:1px solid var(--line)}
           <textarea id="message" name="message" placeholder="Tell us a little about you — and when you'd like to come."></textarea>
         </div>
         <button class="btn btn--primary" type="submit" style="width:100%">Send message</button>
-        <p class="form-note">You can also email us directly if you prefer.</p>
+        <p class="form-note">This opens your email app with the message ready to send.</p>
         <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
       </form>
+      
 
       <div class="signup">
         <h3>Get class updates by email</h3>
@@ -684,7 +685,48 @@ section + section{border-top:1px solid var(--line)}
       }
     });
   };
-  bind(document.getElementById('contactForm'), document.getElementById('formMsg'), 'Thank you — we\'ll be in touch soon. (Preview: add a form endpoint to receive messages.)');
+  // Contact form: deliver by email (mailto), endpoint POST, or show a demo message
+  const cf = document.getElementById('contactForm');
+  const cfMsg = document.getElementById('formMsg');
+  if (cf) {
+    const mode = cf.dataset.mode || 'email';
+    const to = cf.dataset.email;
+    cf.addEventListener('submit', (e) => {
+      const email = cf.querySelector('input[type=email]');
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        e.preventDefault(); email.focus();
+        cfMsg.textContent = 'Please enter a valid email address.';
+        cfMsg.classList.add('show');
+        return;
+      }
+      if (mode === 'email' && to) {
+        e.preventDefault();
+        const get = (n) => (cf.querySelector('[name=' + n + ']') || {}).value || '';
+        const subject = 'Class enquiry from ' + (get('name') || 'the website');
+        const body = [
+          'Name: ' + get('name'),
+          'Email: ' + get('email'),
+          'Interested in: ' + get('interest'),
+          '',
+          get('message')
+        ].join('\n');
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        cfMsg.textContent = 'Your email app should open now — press send and it comes straight to us.';
+        cfMsg.classList.add('show');
+        return;
+      }
+      if (mode === 'endpoint' && cf.getAttribute('action')) {
+        cfMsg.textContent = 'Sending…';
+        cfMsg.classList.add('show');
+        return; // let the browser POST normally
+      }
+      e.preventDefault();
+      cfMsg.textContent = 'Thank you — we\'ll be in touch soon.';
+      cfMsg.classList.add('show');
+      cf.reset();
+    });
+  }
+  bind(document.getElementById('signupForm'), document.getElementById('signupMsg'), 'Thank you for subscribing. (Preview: add an endpoint to go live.)');
   bind(document.getElementById('signupForm'), document.getElementById('signupMsg'), 'Thank you for subscribing. (Preview: add an endpoint to go live.)');
 })();
 </script>

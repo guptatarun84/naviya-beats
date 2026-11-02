@@ -53,7 +53,7 @@ const SITE = {
       "We keep batches small, teach slowly, and repeat things until they feel natural. No auditions, no performance pressure — just good music and friendly people.",
     ],
     images: [
-      { src: "img/kathak-pose.jpg", alt: "Dancer holding a classical pose" },
+      { src: "img/kathak-pose.jpg", alt: "Kathak dancer in an anarkali, arms raised" },
       { src: "img/kathak-twirl.jpg", alt: "Dancer spinning in a lehenga" },
       { src: "img/big-class.jpg", alt: "A small class practising" },
     ],
@@ -157,12 +157,21 @@ const SITE = {
     phone: "",
     hours: "Mon–Fri 6–9 PM · Sat 9 AM–1 PM",
     form: {
-      // Where the form sends. Leave "" for a demo (shows a thank-you message).
-      // To go live, paste e.g. "https://formspree.io/f/xxxxxxx"
-      action: "",
+      // --- How the form delivers ---------------------------------
+      // "email": opens the visitor's mail app with everything pre-filled,
+      //          addressed to the studio email above. Works with no server
+      //          and no signup — the message lands in the real inbox.
+      // "endpoint": POSTs to the `action` URL below (e.g. Formspree).
+      mode: "email",
+      action: "",            // only used when mode is "endpoint"
       method: "POST",
+      // Optional: a WhatsApp number for people who prefer to message.
+      // Use full international format with no + or spaces, e.g. "919876543210".
+      // Leave "" to hide the WhatsApp button.
+      whatsapp: "",
+      whatsappText: "Hi Pooja, I'd like to book a trial class at Naviya Beats.",
       submitLabel: "Send message",
-      note: "You can also email us directly if you prefer.",
+      note: "This opens your email app with the message ready to send.",
     },
     signup: {
       label: "Get class updates by email",

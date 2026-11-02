@@ -17,6 +17,7 @@ const ICONS = {
     '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
   facebook: '<path d="M15 3h-2.5A4.5 4.5 0 008 7.5V10H5.5v4H8v7h4v-7h3l.8-4H12V7.5c0-.8.4-1 1-1h2V3z"/>',
   mail: '<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+  whatsapp: '<path d="M20.5 11.6a8.5 8.5 0 01-12.6 7.5L3.5 20.5l1.4-4.3A8.5 8.5 0 1120.5 11.6z"/><path d="M8.9 8.4c.3-.6.6-.6.9-.6h.7c.2 0 .5 0 .7.5l.8 1.9c.1.3 0 .5-.1.7l-.6.7c-.2.2-.2.4-.1.6.5.9 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.7-.1l1.8.9c.3.1.5.2.5.4 0 .9-.5 1.7-1.1 2-.5.3-1.2.4-1.9.2-1.3-.3-2.9-1.1-4.2-2.4-1.2-1.2-2-2.7-2.3-3.9-.2-.7-.1-1.4.2-1.9z"/>',
   user: '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5"/>',
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
 };
@@ -115,6 +116,13 @@ const contactMeta = [
 ]
   .filter(Boolean)
   .join("\n              ");
+
+const wa = c.contact.form.whatsapp || "";
+const whatsappBtn = wa
+  ? `<a class="btn btn--ghost whatsapp-btn" style="width:100%; margin-top:.6rem"
+        href="https://wa.me/${esc(wa)}?text=${encodeURIComponent(c.contact.form.whatsappText || "")}"
+        target="_blank" rel="noopener">${icon("whatsapp", "ico ico-sm")} Message us on WhatsApp</a>`
+  : "";
 
 const t = c.theme;
 
@@ -582,7 +590,7 @@ section + section{border-top:1px solid var(--line)}
     </div>
 
     <div class="form-card">
-      <form id="contactForm" action="${esc(c.contact.form.action)}" method="${esc(c.contact.form.method)}" novalidate>
+      <form id="contactForm" action="${esc(c.contact.form.action)}" method="${esc(c.contact.form.method)}" data-mode="${esc(c.contact.form.mode || "email")}" data-email="${esc(c.contact.email)}" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -603,6 +611,7 @@ section + section{border-top:1px solid var(--line)}
         <p class="form-note">${esc(c.contact.form.note)}</p>
         <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
       </form>
+      ${whatsappBtn}
 
       <div class="signup">
         <h3>${esc(c.contact.signup.label)}</h3>
@@ -705,7 +714,48 @@ section + section{border-top:1px solid var(--line)}
       }
     });
   };
-  bind(document.getElementById('contactForm'), document.getElementById('formMsg'), 'Thank you — we\\'ll be in touch soon. (Preview: add a form endpoint to receive messages.)');
+  // Contact form: deliver by email (mailto), endpoint POST, or show a demo message
+  const cf = document.getElementById('contactForm');
+  const cfMsg = document.getElementById('formMsg');
+  if (cf) {
+    const mode = cf.dataset.mode || 'email';
+    const to = cf.dataset.email;
+    cf.addEventListener('submit', (e) => {
+      const email = cf.querySelector('input[type=email]');
+      if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.value)) {
+        e.preventDefault(); email.focus();
+        cfMsg.textContent = 'Please enter a valid email address.';
+        cfMsg.classList.add('show');
+        return;
+      }
+      if (mode === 'email' && to) {
+        e.preventDefault();
+        const get = (n) => (cf.querySelector('[name=' + n + ']') || {}).value || '';
+        const subject = 'Class enquiry from ' + (get('name') || 'the website');
+        const body = [
+          'Name: ' + get('name'),
+          'Email: ' + get('email'),
+          'Interested in: ' + get('interest'),
+          '',
+          get('message')
+        ].join('\\n');
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        cfMsg.textContent = 'Your email app should open now — press send and it comes straight to us.';
+        cfMsg.classList.add('show');
+        return;
+      }
+      if (mode === 'endpoint' && cf.getAttribute('action')) {
+        cfMsg.textContent = 'Sending…';
+        cfMsg.classList.add('show');
+        return; // let the browser POST normally
+      }
+      e.preventDefault();
+      cfMsg.textContent = 'Thank you — we\\'ll be in touch soon.';
+      cfMsg.classList.add('show');
+      cf.reset();
+    });
+  }
+  bind(document.getElementById('signupForm'), document.getElementById('signupMsg'), 'Thank you for subscribing. (Preview: add an endpoint to go live.)');
   bind(document.getElementById('signupForm'), document.getElementById('signupMsg'), 'Thank you for subscribing. (Preview: add an endpoint to go live.)');
 })();
 </script>
